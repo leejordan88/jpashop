@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
 @Setter @Getter
 public class Member {
 
