@@ -25,9 +25,8 @@ class MemberServiceTest {
     @DisplayName("회원가입")
     public void joinMember() throws Exception{
         //given
-        Member member = Member.builder()
-                .username("준성")
-                .build();
+        Member member = new Member();
+        member.setUsername("준성");
 
         //when
         Long saveId = memberService.join(member);
@@ -39,12 +38,10 @@ class MemberServiceTest {
     @Test
     public void duplicateMember() throws Exception {
         //given
-        Member member1 = Member.builder()
-                .username("준성")
-                .build();
-        Member member2 = Member.builder()
-                .username("준성")
-                .build();
+        Member member1 = new Member();
+        member1.setUsername("준성");
+        Member member2 = new Member();
+        member2.setUsername("준성");
 
         //when
         memberService.join(member1);
