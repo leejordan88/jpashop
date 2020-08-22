@@ -1,7 +1,6 @@
 package jpabook.jpashop.domain.item;
 
-import jpabook.jpashop.domain.controller.BookForm;
-import lombok.Builder;
+import jpabook.jpashop.controller.BookForm;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
