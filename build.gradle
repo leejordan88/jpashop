@@ -1,44 +1,87 @@
-plugins {
-	id 'org.springframework.boot' version '2.3.3.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
+//querydsl 추가
+buildscript {
+	ext {
+		querydslPluginVersion = '1.0.10' // 플러그인 버전
+	}
+	repositories {
+		maven { url "https://plugins.gradle.org/m2/" } // 플러그인 저장소
+	}
+	dependencies {
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}") // querydsl 플러그인 의존성 등록
+	}
 }
+
+plugins {
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 group = 'jpabook'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
-	implementation group: 'org.hibernate.validator', name: 'hibernate-validator'
-	implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+    implementation group: 'org.hibernate.validator', name: 'hibernate-validator'
+    implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
-	//ENTITY를 JSON으로 리턴하고 싶을 때 사용
-	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5'
+    //ENTITY를 JSON으로 리턴하고 싶을 때 사용
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5'
+
+    //querydsl 추가
+    implementation 'com.querydsl:querydsl-jpa'
+	//querydsl 추가
+    implementation 'com.querydsl:querydsl-apt'
 
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+//querydsl 추가
+//def querydslDir = 'src/main/generated'
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	library = "com.querydsl:querydsl-apt"
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', querydslDir]
+		}
 	}
+}
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
