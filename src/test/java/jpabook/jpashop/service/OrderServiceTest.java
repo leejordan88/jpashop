@@ -30,14 +30,14 @@ class OrderServiceTest {
     @Test
     public void order() throws Exception {
         //given
-        Member member = Member.builder()
-                .username("준성")
-                .address(Address.builder()
-                    .city("안양")
-                    .street("인덕원")
-                    .zipcode("00111")
-                    .build())
+        Address address = Address.builder()
+                .city("안양")
+                .street("인덕원")
+                .zipcode("00111")
                 .build();
+        Member member = new Member();
+        member.setUsername("준성");
+        member.setAddress(address);
         em.persist(member);
 
         Item book = new Book();

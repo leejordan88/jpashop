@@ -24,8 +24,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
-	compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.5.Final'
-	compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+	implementation group: 'org.hibernate.validator', name: 'hibernate-validator'
+	implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+
+	//ENTITY를 JSON으로 리턴하고 싶을 때 사용
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5'
+
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
